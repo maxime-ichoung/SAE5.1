@@ -1,6 +1,6 @@
 <h1 align="center"> Docker Config </h1>
 
-<h3> Install docker </h3>
+<h3> I. Install docker </h3>
 
 Cette documentation est fonctionnel sous CentOS. \
 Dans un premiers temps il vous faut désinstaller l'ensembles des packages lié à docker.
@@ -27,3 +27,5 @@ Maintenant installez le repo docker engine.
 sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
 
 Félicitation vous avez installer Docker Engine.
+
+<h3> II. Dockerfile </h3>
