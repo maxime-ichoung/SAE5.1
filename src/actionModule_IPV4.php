@@ -19,6 +19,7 @@ if(isset($_POST['ok_calc'], $_POST['nb_res'], $_POST['addr'], $_POST['mask'])){
             }
         }
     }
+    # Mécanisme de filtration des demandes de divisions trop grandes par rappport au réseau fournis
     if($taille_alloue_totale > $nb_hosts-$nb_res){
         echo "
         <form id='form_erreur_taille' action='Module_IPV4.php' method='post'>
@@ -63,6 +64,17 @@ if(isset($_POST['ok_calc'], $_POST['nb_res'], $_POST['addr'], $_POST['mask'])){
     }
     # Calcul du masque décimal du réseau principal
     $mask_major = mask_cdri_vers_dec($mask);
+    #Calcul de l'adresse, du broadcast et de la plage d'adresse de chaque sous réseaux
+    $part_mask = explode('.',$mask_major);
+    $part_addr = explode('.',$addr);
+    $part_addr_sous_res = $part_addr;
+    for($i=0; $i<=3; $i++){
+        if($part_mask[$i] < 255){
+            $part_addr_sous_res[$i] = 0;
+        }
+    }
+    echo 'addr reseau : '.$part_addr_sous_res[0].'.'.$part_addr_sous_res[1].'.'.$part_addr_sous_res[2].'.'.$part_addr_sous_res[3];
+
 
 }
 echo "<table>";
