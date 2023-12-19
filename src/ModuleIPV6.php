@@ -13,11 +13,12 @@
         <!-- Fil d'ariane -->
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item active" aria-current="page">Home</li>
+                <li class="breadcrumb-item"><a href="Home.php">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Module 3 : IPV6</li>
             </ol>
         </nav>
 
-        <p>Bienvenue sur la page d'accueil</p>
+        <p>Bienvenue sur le module IPV6</p>
     </main>
 
     <?php include("Footer.html") ?>
