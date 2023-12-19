@@ -12,26 +12,58 @@ if(isset($_POST['ok_calc'], $_POST['nb_res'], $_POST['addr'], $_POST['mask'])){
         for($j=30; $j>8; $j--){
             $taille_alloue = (2**(32-$j))-2;
             if($taille_actuel <= $taille_alloue){
-                ${'taille_alloue'.$i} = $taille_alloue;
-                ${'mask'.$i} = $j;
+                ${'taille_alloue_'.$i} = $taille_alloue;
+                ${'mask_'.$i} = $j;
                 break;
             }
         }
+    }
+    # Algorithme de conversion masque CIDR vers masque décimaux
+    # Potentiellement à refaire sous forme de fonction
+    for($k=1; $k<=$nb_res; $k++){
+        $mask_actuel = ${'mask_'.$k};
+        echo "k : ".$k;
+        $mask_dec = '';
+        $packet_bits = 1;
+        while($mask_actuel >= 8){
+            $mask_dec = $mask_dec.'255';
+            if($packet_bits <= 3){
+                $mask_dec = $mask_dec.'.';
+            }
+            $mask_actuel = $mask_actuel-8;
+            $packet_bits++;
+        }
+        while($packet_bits<=4){
+            if($mask_actuel!=0){
+                $der_part_non_null = 255-(2**(8-$mask_actuel))+1;
+                $mask_dec = $mask_dec.$der_part_non_null;
+                $mask_actuel = 0;
+            }
+            else{
+                $mask_dec = $mask_dec.'0';
+            }
+            if($packet_bits <= 3){
+                $mask_dec = $mask_dec.'.';
+            }
+            $packet_bits++;
+        }
+        ${'mask_dec_'.$k} = $mask_dec;
     }
 }
 
 
 echo "<table>";
-echo "<tr><th><p>Sous réseaux</p></th><th><p>Taille souhaitée</p></th><th><p>Taille allouée</p></th><th><p>Adresse</p></th><th><p>Masque</p></th><th><p>Ensemble d'adresse attribuable</p></th><th><p>Broadcast</p></th></tr>";
+echo "<tr><th><p>Sous réseaux</p></th><th><p>Taille souhaitée</p></th><th><p>Taille allouée</p></th><th><p>Adresse</p></th><th><p>Masque</p></th><th><p>Masque décimal</p></th><th><p>Ensemble d'adresse attribuable</p></th><th><p>Broadcast</p></th></tr>";
 $res = 1;
 while($res < $nb_res+1){
     $taille_res = 'taille_res_'.$res;
     echo "<tr>";
     echo "<td>$res</td>";
     echo "<td>"; echo $_POST[$taille_res]; echo"</td>";
-    echo "<td>"; echo ${'taille_alloue'.$res}; echo "</td>";
+    echo "<td>"; echo ${'taille_alloue_'.$res}; echo "</td>";
     echo "<td>"; echo "</td>";
-    echo "<td>"; echo '/'.${'mask'.$res}; echo "</td>";
+    echo "<td>"; echo '/'.${'mask_'.$res}; echo "</td>";
+    echo "<td>"; echo ${'mask_dec_'.$res}; echo "</td>";
     echo "</tr>";
     $res++;
 }
