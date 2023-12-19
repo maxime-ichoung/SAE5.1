@@ -20,7 +20,7 @@
 
         <h2>Formulaire IPV6</h2>
 
-        <form action="/submit_ipv6">
+        <form action="actions/actionModule_IPV6.php" method="post">
             <label for="ipv6">Adresse IPv6:</label><br>
             <input class="form-control" type="text" id="ipv6" name="ipv6" pattern="^([0-9a-fA-F]{0,4}:){1,7}[0-9a-fA-F]{0,4}$" required>
             <small>Entrez une adresse IPv6 valide. Par exemple: 2001:0db8:85a3:0000:0000:8a2e:0370:7334</small><br><br>
