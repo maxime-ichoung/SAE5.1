@@ -5,7 +5,7 @@ if(isset($_POST['ok_calc'], $_POST['nb_res'], $_POST['addr'], $_POST['mask'])){
     $mask = $_POST['mask'];
     $nb_hosts = (2**(32-$mask))-2;
     echo $nb_hosts;
-    # Algorithme de calcul de la taille allouée à chaque sous réseaux
+    # Algorithme de calcul de la taille et du masque alloué à chaque sous réseaux
     for($i=1; $i<=$nb_res; $i++){
         $taille_res = 'taille_res_'.$i;
         $taille_actuel = $_POST[$taille_res];
@@ -13,6 +13,7 @@ if(isset($_POST['ok_calc'], $_POST['nb_res'], $_POST['addr'], $_POST['mask'])){
             $taille_alloue = (2**(32-$j))-2;
             if($taille_actuel <= $taille_alloue){
                 ${'taille_alloue'.$i} = $taille_alloue;
+                ${'mask'.$i} = $j;
                 break;
             }
         }
@@ -29,6 +30,8 @@ while($res < $nb_res+1){
     echo "<td>$res</td>";
     echo "<td>"; echo $_POST[$taille_res]; echo"</td>";
     echo "<td>"; echo ${'taille_alloue'.$res}; echo "</td>";
+    echo "<td>"; echo "</td>";
+    echo "<td>"; echo '/'.${'mask'.$res}; echo "</td>";
     echo "</tr>";
     $res++;
 }
