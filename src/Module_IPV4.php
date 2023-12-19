@@ -3,13 +3,13 @@
     <meta charset="UTF-8">
     <title>Module IPV4</title>
 </head>
-<body>
+<body onload="alert_taille()">
 <?php
 if(isset($_POST['nb_res'])){
     $nb_res = $_POST['nb_res'];
 }
 else{
-    $nb_res = 6;
+    $nb_res = 4;
 }
 ?>
 <form action="./Module_IPV4.php" method="post" name="formul_nb_res" id="formul_nb_res">
@@ -41,5 +41,17 @@ else{
     <br>
     <input type="submit" value="Calculer" name="ok_calc">
 </form>
+<?php
+if(isset($_POST['erreur_taille'])){
+    unset($_POST['erreur_taille']);
+    echo "
+    <script type='text/javascript'>
+        function alert_taille(){
+            alert('Réseaux principal trop petit. Veuillez réduire la taille et/ou le nombre de vos sous réseaux.');
+        }
+    </script>
+    ";
+}
+?>
 </body>
 </html>

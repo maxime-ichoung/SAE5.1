@@ -5,6 +5,7 @@ if(isset($_POST['ok_calc'], $_POST['nb_res'], $_POST['addr'], $_POST['mask'])){
     $mask = $_POST['mask'];
     $nb_hosts = (2**(32-$mask))-2;
     # Algorithme de calcul de la taille et du masque alloué à chaque sous réseaux
+    $taille_alloue_totale = 0;
     for($i=1; $i<=$nb_res; $i++){
         $taille_res = 'taille_res_'.$i;
         $taille_actuel = $_POST[$taille_res];
@@ -13,9 +14,19 @@ if(isset($_POST['ok_calc'], $_POST['nb_res'], $_POST['addr'], $_POST['mask'])){
             if($taille_actuel <= $taille_alloue){
                 ${'taille_alloue_'.$i} = $taille_alloue;
                 ${'mask_'.$i} = $j;
+                $taille_alloue_totale += $taille_alloue;
                 break;
             }
         }
+    }
+    if($taille_alloue_totale > $nb_hosts){
+        echo "
+        <form id='form_erreur_taille' action='Module_IPV4.php' method='post'>
+        <input type='hidden' name='erreur_taille' value='1'>
+        </form>
+        <script type='text/javascript'>
+            document.getElementById('form_erreur_taille').submit();
+        </script>";
     }
     # Algorithme de conversion masque CIDR vers masque décimaux
     function mask_cdri_vers_dec($mask_actuel){
@@ -52,6 +63,7 @@ if(isset($_POST['ok_calc'], $_POST['nb_res'], $_POST['addr'], $_POST['mask'])){
     }
     # Calcul du masque décimal du réseau principal
     $mask_major = mask_cdri_vers_dec($mask);
+
 }
 echo "<table>";
 echo "<tr><th><p>Sous réseaux</p></th><th><p>Taille souhaitée</p></th><th><p>Taille allouée</p></th><th><p>Adresse</p></th><th><p>Masque</p></th><th><p>Masque décimal</p></th><th><p>Ensemble d'adresse attribuable</p></th><th><p>Broadcast</p></th></tr>";
