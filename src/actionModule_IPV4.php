@@ -4,7 +4,6 @@ if(isset($_POST['ok_calc'], $_POST['nb_res'], $_POST['addr'], $_POST['mask'])){
     $addr = $_POST['addr'];
     $mask = $_POST['mask'];
     $nb_hosts = (2**(32-$mask))-2;
-    echo $nb_hosts;
     # Algorithme de calcul de la taille et du masque alloué à chaque sous réseaux
     for($i=1; $i<=$nb_res; $i++){
         $taille_res = 'taille_res_'.$i;
@@ -19,10 +18,7 @@ if(isset($_POST['ok_calc'], $_POST['nb_res'], $_POST['addr'], $_POST['mask'])){
         }
     }
     # Algorithme de conversion masque CIDR vers masque décimaux
-    # Potentiellement à refaire sous forme de fonction
-    for($k=1; $k<=$nb_res; $k++){
-        $mask_actuel = ${'mask_'.$k};
-        echo "k : ".$k;
+    function mask_cdri_vers_dec($mask_actuel){
         $mask_dec = '';
         $packet_bits = 1;
         while($mask_actuel >= 8){
@@ -47,11 +43,16 @@ if(isset($_POST['ok_calc'], $_POST['nb_res'], $_POST['addr'], $_POST['mask'])){
             }
             $packet_bits++;
         }
-        ${'mask_dec_'.$k} = $mask_dec;
+        return $mask_dec;
     }
+    # Calcul des masques décimaux des sous réseaux
+    for($k=1; $k<=$nb_res; $k++){
+        $mask_actuel = ${'mask_'.$k};
+        ${'mask_dec_'.$k} = mask_cdri_vers_dec($mask_actuel);
+    }
+    # Calcul du masque décimal du réseau principal
+    $mask_major = mask_cdri_vers_dec($mask);
 }
-
-
 echo "<table>";
 echo "<tr><th><p>Sous réseaux</p></th><th><p>Taille souhaitée</p></th><th><p>Taille allouée</p></th><th><p>Adresse</p></th><th><p>Masque</p></th><th><p>Masque décimal</p></th><th><p>Ensemble d'adresse attribuable</p></th><th><p>Broadcast</p></th></tr>";
 $res = 1;
