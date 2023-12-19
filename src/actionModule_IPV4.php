@@ -19,7 +19,7 @@ if(isset($_POST['ok_calc'], $_POST['nb_res'], $_POST['addr'], $_POST['mask'])){
             }
         }
     }
-    if($taille_alloue_totale > $nb_hosts){
+    if($taille_alloue_totale > $nb_hosts-$nb_res){
         echo "
         <form id='form_erreur_taille' action='Module_IPV4.php' method='post'>
         <input type='hidden' name='erreur_taille' value='1'>
