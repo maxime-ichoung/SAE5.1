@@ -6,28 +6,73 @@ if(isset($_POST['ipv6'])){
     // Renvoie des resultats vers la vue
     session_start();
     $resultat = binaire_poids_fort($ipv6);
-    $_SESSION['ipv6_simplifiee'] = ipv6_simplifiee($ipv6);
+    $_SESSION['ipv6_simplifiee'] = ipv6_simplify($ipv6);
     $_SESSION['octets_binaire'] = $resultat['binaire'];
     $_SESSION['octets_hexa'] = $resultat['hexa'];
     header("Location: ../Module_IPV6.php");
 }
-// Parse l'ipv6 a chaque :
-$parse_ipv6 = explode(":", $ipv6);
-echo "<br>";
+
+function ipv6_simplify($adresse){
+    /**
+     * Cette fonction à pour but de simplifier une ipv6
+     *
+     * Entrée : string
+     *
+     * Sortie : String
+     */
+    // Parse l'ipv6 a chaque :
+    $parse_ipv6 = explode(":", $adresse);
+    echo "<br>";
 
 
 // Enlève tous les 0 du debut de chaque chaine de parse_ipv6
-for ($i = 0; $i < sizeof($parse_ipv6) - 1; $i++){
-    $parse_ipv6[$i] = ltrim($parse_ipv6[$i], "0");
-}
+    for ($i = 0; $i < sizeof($parse_ipv6); $i++){
+        $parse_ipv6[$i] = ltrim($parse_ipv6[$i], "0");
+    }
 
-
-foreach ($parse_ipv6 as $part){
-    echo $part . ":";
-}
-
-function ipv6_simplifiee($address){
-    return inet_ntop(inet_pton($address));
+    $compt = 0; //Compteur visant à ne simplifier un double "0000" qu'une seule fois
+    $strAdresse = implode(":", $parse_ipv6); //Transformation de la liste en chaine de caractère
+    for ($i =0; $i<strlen($strAdresse);$i++){ //Parcours chaine
+        if ($i == 0 and $strAdresse[$i] == ":" and $strAdresse[$i+1] == ":"){
+            if ($strAdresse[$i+2] == ":"){
+                $j = $i;
+                while ($strAdresse[$j +2] == ":"){ //Boucle si jamais il y a plus de 2 "0000"
+                    $j ++;
+                }
+                $addAvant = substr($strAdresse, 0, $i); //Tout avant position i, non compris
+                $addApres = substr($strAdresse, $j); //Tout apres position i, i non compris
+                $strAdresse = $addAvant . $addApres;
+                $compt = 1;
+            }
+            else {
+                $compt = 1;
+            }
+            $i++;
+        }
+        else if($i < strlen($strAdresse)-2 and $strAdresse[$i] == ":" and $strAdresse[$i+2] == ":" and $compt != 1){ //Suppression d'un ":" dans un triple ":"
+            $j = $i;
+            while ($strAdresse[$j +2] == ":"){ ////Boucle si jamais il y a plus de 2 "0000"
+                $j ++;
+            }
+            $addAvant = substr($strAdresse, 0, $i); //Tout avant position i, non compris
+            $addApres = substr($strAdresse, $j); //Tout apres position i, i non compris
+            $strAdresse = $addAvant . $addApres;
+            $compt = 1;
+            $i++;
+        }
+        else if (($i == strlen($strAdresse)-2 and $compt==0 and $strAdresse[$i] == ":" and $strAdresse[$i] == ":" )){
+            $compt =1;
+        }
+        else if ($i < strlen($strAdresse)-1 and $strAdresse[$i] == ":" and $strAdresse[$i+1] == ":") { //Mise en place d'un "0" entre un double ":"
+            $addAvant = substr($strAdresse, 0, $i + 1); //Tout avant position i
+            $addApres = substr($strAdresse, $i + 1); //Tout apres position i
+            $strAdresse = $addAvant . "0" . $addApres;
+        }
+    }
+    if ($strAdresse[strlen($strAdresse)-1] == ":" and $strAdresse[strlen($strAdresse)-2] != ":"){
+        $strAdresse = $strAdresse . "0";
+    }
+    return $strAdresse;
 }
 
 function binaire_poids_fort($adresse) {
