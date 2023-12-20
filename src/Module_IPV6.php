@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -24,8 +25,22 @@
             <label for="ipv6">Adresse IPv6:</label><br>
             <input class="form-control" type="text" id="ipv6" name="ipv6" pattern="^([0-9a-fA-F]{0,4}:){1,7}[0-9a-fA-F]{0,4}$" required>
             <small>Entrez une adresse IPv6 valide. Par exemple: 2001:0db8:85a3:0000:0000:8a2e:0370:7334</small><br><br>
-            <input type="submit" value="Submit">
+            <input type="submit" value="Envoyer">
         </form>
+
+        <?php
+        if(isset($_SESSION['ipv6_simplifiee'])){
+            $ipv6_simplifiee = $_SESSION['ipv6_simplifiee'];
+            $octets_binaire = $_SESSION['octets_binaire'];
+            $octets_hexa = $_SESSION['octets_hexa'];
+            echo "<p>Adresse IPV6 simplifier : " . $ipv6_simplifiee . "</p>";
+            echo '<br>Affichage binaire et hexadécimal des deux octets les plus significatifs : ';
+            echo '<br>Hexa: ' . $octets_hexa . ', Binaire: ' . $octets_binaire;
+            for ($i = 0; $i < 2; $i++) {
+                echo '<br>Hexa: ' . substr($octets_hexa, $i*2, 2) . ', Binaire: ' . substr($octets_binaire, $i*8, 8);
+            }
+        }
+        ?>
     </main>
 
     <?php include("Footer.html") ?>
