@@ -12,7 +12,7 @@
     <?php include("Header.html") ?>
 
     <main class="container mt-5">
-        <!-- Breadcrumb -->
+        <!-- Fil d'ariane -->
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="Home.php">Home</a></li>

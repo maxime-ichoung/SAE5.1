@@ -1,4 +1,9 @@
 <?php
+
+/***
+* @param $adresse
+* @return string
+ */
 function simplifyV2($adresse){
     //Parcours de la chaine de caractère afin de trouver le plus grand enchainement de "0"
     $deb = 0; $fin = 0; $compt = 0; $compt_final = 0;
@@ -69,6 +74,8 @@ function simplifyV2($adresse){
     $adresseSimple =  implode(':', $segments);
     return $adresseSimple;
 }
+
+
 /***
 * @param $adresse
 * @return string[]
@@ -92,4 +99,30 @@ function binaire_poids_fort($adresse) {
     }
 
     return array('binaire' => $chaineBinaire, 'hexa' => $chaineHexResultat);
+}
+
+
+/***
+* @param $ipv6
+* @return string
+ */
+function type_ipv6($ipv6) {
+    if (str_starts_with($ipv6, "fe80:")) {
+        return "Adresse locale du lien";
+    }
+    elseif (str_starts_with($ipv6, "ff00:")) {
+        return "Multicast";
+    }
+    elseif ($ipv6 == "::1") {
+        return "Adresse de bouclage";
+    }
+    elseif ($ipv6 == "::") {
+        return "Adresse non spécifiée";
+    }
+    elseif (preg_match("/^[0-9a-f]{1,4}:/", $ipv6)) {
+        return "Unicast";
+    }
+    else {
+        return "Type d'adresse inconnu";
+    }
 }
