@@ -39,7 +39,7 @@
     </form>
     <br>
 
-    <form action="actions/actionModule_IPV4.php" method="post" name="formul_sous_res" onsubmit="return valider()" id="formul_sous_res" class="row g-3">
+    <form action="Module_IPV4_affichage.php" method="post" name="formul_sous_res" onsubmit="return valider()" id="formul_sous_res" class="row g-3 mb-5">
         <div class="col-md-auto">
             <label for="addr" class="form-label">Adresse IPV4 :</label>
         </div>

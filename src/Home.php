@@ -6,6 +6,9 @@
     <link href="styles/styles.css" rel="stylesheet">
     <title>Accueil</title>
     <style>
+        a {
+            text-decoration: none;
+        }
         figure {
             display: grid;
             border-radius: 1rem;

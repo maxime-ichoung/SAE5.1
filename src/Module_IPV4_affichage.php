@@ -16,71 +16,97 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="Home.php">Home</a></li>
                 <li class="breadcrumb-item"><a href="Module_IPV4.php">Module 2 : IPV4</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Affichage IPV4</li>
+                <li class="breadcrumb-item active" aria-current="page">Affichage des resultats du module IPV4</li>
             </ol>
         </nav>
 
         <?php
-        if(isset($_POST['nb_res'])){
+        if(isset($_POST['ok_calc'], $_POST['nb_res'], $_POST['addr'], $_POST['mask'])) {
+            require ("actions/fichier_fonction_temporaire_moduleIPV4.php");
             $nb_res = $_POST['nb_res'];
-        }
-        else{
-            $nb_res = 4;
-        }
-        if(isset($_POST['addr'])){
-            $addr_aff = $_POST['addr'];
-        }
-        else{
-            $addr_aff = '';
-        }
-        if(isset($_POST['mask'])){
-            $mask_aff = $_POST['mask'];
-        }
-        else{
-            $mask_aff = '';
-        }
-        ?>
-        <form action="actions/actionModule_IPV4.php" method="post" name="formul_nb_res" id="formul_nb_res">
-            Nombre de sous réseaux souhaités : <input type="number" name="nb_res" value="<?php echo $nb_res ?>">  <input type="submit" value="Valider" name="ok_nb_res">
-        </form>
-        <br>
-        <form action="actions/actionModule_IPV4.php" method="post" name="formul_sous_res" onsubmit="return valider()" id="formul_sous_res">
-            Adresse IPV4 : <input type="text" name="addr" required pattern="^((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])$" value="<?php echo $addr_aff ?>"> / <input type="number" name="mask" min="1" max="32" value="<?php echo $mask_aff ?>" required>
-            <br>
-            <br>
-            <?php
-            echo "<table>";
-            echo "<tr><th><p>Sous réseaux</p></th><th><p>Taille</p></th></tr>";
-            $res = 1;
-            while($res < $nb_res+1){
-                $taille_res = 'taille_res_'.$res;
-                echo "<tr>";
-                echo "<td>$res</td>";
-                echo "<td><input type='number' name=$taille_res min='1' required> </td>";
-                echo "</tr>";
-                $res++;
-            }
-            echo "</table>
-        <input type='hidden' name='nb_res' value=$nb_res>
-        ";
+            $addr = $_POST['addr'];
+            $mask = $_POST['mask'];
+            $nb_hosts = (2 ** (32 - $mask)) - 2;
 
-            ?>
-            <br>
-            <br>
-            <input type="submit" value="Calculer" name="ok_calc">
-        </form>
-        <?php
-        if(isset($_POST['erreur_taille'])){
-            unset($_POST['erreur_taille']);
-            echo "
-            <script type='text/javascript'>
-                function alert_taille(){
-                    alert('Réseaux principal trop petit. Veuillez réduire la taille et/ou le nombre de vos sous réseaux.');
-                }
-            </script>
-            ";
+            # Calcul de la taille et du masque alloué à chaque sous réseaux ainsi que de la taille cumulé des sous réseaux
+            $taille_alloue_totale = 0;
+            for ($i = 1; $i <= $nb_res; $i++) {
+                $taille_res = 'taille_res_' . $i;
+                $taille_actuel = $_POST[$taille_res];
+                $tamp = taille_mask_sous_res($taille_actuel);
+                ${'taille_alloue_' . $i} = $tamp[0];
+                ${'mask_' . $i} = $tamp[1];
+            }
+
+            # Mécanisme de filtration des demandes de divisions trop grandes par rappport au réseau fournis
+            if ($taille_alloue_totale > $nb_hosts - $nb_res) {
+                echo "
+                <form id='form_erreur_taille' action='Module_IPV4.php' method='post'>
+                <input type='hidden' name='erreur_taille' value='1'>
+                </form>
+                <script type='text/javascript'>
+                    document.getElementById('form_erreur_taille').submit();
+                </script>";
+            }
+
+            # Calcul des masques décimaux des sous réseaux
+            for ($k = 1; $k <= $nb_res; $k++) {
+                $mask_actuel = ${'mask_' . $k};
+                ${'mask_dec_' . $k} = mask_cdri_vers_dec($mask_actuel);
+            }
+
+            # Calcul du masque décimal du réseau principal
+            $mask_major = mask_cdri_vers_dec($mask);
+
+            # Calcul de l'adresse, du broadcast et de la plage d'adresse de chaque sous réseaux
+            $addr_bin = ip2long($addr);
+            $mask_sous_res = -1 << (32 - $mask);
+            $addr_sous_res = $addr_bin & $mask_sous_res;
+            for ($i = 1; $i <= $nb_res; $i++) {
+                $tamp = addr_broad_plage_sous_res($addr_sous_res,$mask_sous_res,${'taille_alloue_'.$i});
+                ${'addr_sous_res_' . $i} = $tamp[0];
+                ${'Plage_' . $i} = $tamp[1];
+                ${'broadcast_' . $i} = $tamp[2];
+                $addr_sous_res = ${'broadcast_' . $i} +1;
+                $mask_sous_res = ${'mask_' . $i};
+            }
         }
         ?>
+
+        <!-- Tableau d'affichage dynamique -->
+        <div class="table-responsive mt-5">
+            <table class="table table-striped align-middle">
+                <thead>
+                    <tr>
+                        <th scope="col">Sous réseaux</th>
+                        <th scope="col">Taille souhaitée</th>
+                        <th scope="col">Taille allouée</th>
+                        <th scope="col">Adresse</th>
+                        <th scope="col">Masque</th>
+                        <th scope="col">Masque décimal</th>
+                        <th scope="col">Ensemble d'adresse attribuable</th>
+                        <th scope="col">Broadcast</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    for ($res = 1; $res <= $nb_res; $res++) {
+                        $taille_res = 'taille_res_' . $res;
+                        echo "<tr>";
+                        echo "<th scope='row'>$res</th>";
+                        echo "<td>" . $_POST[$taille_res] . "</td>";
+                        echo "<td>" . ${'taille_alloue_' . $res} . "</td>";
+                        echo "<td>" . long2ip(${'addr_sous_res_' . $res}) . "</td>";
+                        echo "<td>/" . ${'mask_' . $res} . "</td>";
+                        echo "<td>" . ${'mask_dec_' . $res} . "</td>";
+                        echo "<td>" . ${'Plage_' . $res} . "</td>";
+                        echo "<td>" . long2ip(${'broadcast_' . $res}) . "</td>";
+                        echo "</tr>";
+                    }
+                    ?>
+                </tbody>
+            </table>
+        </div>
     </main>
 
     <?php include("Footer.html") ?>
