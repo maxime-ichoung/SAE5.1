@@ -67,30 +67,36 @@
             <div class="col-auto">
                 <div class="card">
                     <div class="card-body">
-                        <figure>
-                            <img src="https://picsum.photos/id/287/250/300" alt="Mountains">
-                            <figcaption>The Day</figcaption>
-                        </figure>
+                        <a href="Module_ping.php">
+                            <figure>
+                                <img src="https://picsum.photos/id/287/250/300" alt="Mountains">
+                                <figcaption>Module Ping</figcaption>
+                            </figure>
+                        </a>
                     </div>
                 </div>
             </div>
             <div class="col-auto">
                 <div class="card">
                     <div class="card-body">
-                        <figure>
-                            <img src="https://picsum.photos/id/287/250/300" alt="Mountains">
-                            <figcaption>The Day</figcaption>
-                        </figure>
+                        <a href="Module_IPV4.php">
+                            <figure>
+                                <img src="https://picsum.photos/id/287/250/300" alt="Mountains">
+                                <figcaption>Module IPV4</figcaption>
+                            </figure>
+                        </a>
                     </div>
                 </div>
             </div>
             <div class="col-auto">
                 <div class="card">
                     <div class="card-body">
-                        <figure>
-                            <img src="https://picsum.photos/id/287/250/300" alt="Mountains">
-                            <figcaption>The Day</figcaption>
-                        </figure>
+                        <a href="Module_IPV6.phpphp">
+                            <figure>
+                                <img src="https://picsum.photos/id/287/250/300" alt="Mountains">
+                                <figcaption>Module IPV6</figcaption>
+                            </figure>
+                        </a>
                     </div>
                 </div>
             </div>
