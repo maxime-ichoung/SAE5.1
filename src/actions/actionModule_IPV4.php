@@ -11,9 +11,10 @@ if(isset($_POST['ok_calc'], $_POST['nb_res'], $_POST['addr'], $_POST['mask'])) {
             $taille_alloue = (2 ** (32 - $j)) - 2;
             if ($taille_sous_res <= $taille_alloue) {
                 $mask_sous_res = $j;
-                return [$taille_alloue,$mask_sous_res];
+                break;
             }
         }
+        return [$taille_alloue,$mask_sous_res];
     }
 
 
@@ -74,23 +75,25 @@ if(isset($_POST['ok_calc'], $_POST['nb_res'], $_POST['addr'], $_POST['mask'])) {
     # Calcul du masque décimal du réseau principal
     $mask_major = mask_cdri_vers_dec($mask);
     #Calcul de l'adresse, du broadcast et de la plage d'adresse de chaque sous réseaux
+    function addr_broad_plage_sous_res($addr,$mask,$taille_alloue){
+        $premierPlage = $addr + 1;
+        $dernierPlage = $premierPlage + ($taille_alloue - 1);
+        $Plage = long2ip($premierPlage) . ' - ' . long2ip($dernierPlage);
+        $broadcast = $dernierPlage + 1;
+
+        return [$addr,$Plage,$broadcast];
+    }
 
     $addr_bin = ip2long($addr);
-    $mask_res_bin = -1 << (32 - $mask);
-
-    $addr_sous_res_1 = $addr_bin & $mask_res_bin;
-    $premierPlage_1 = $addr_sous_res_1 + 1;
-    $dernierPlage_1 = $premierPlage_1 + ($taille_alloue_1 - 1);
-    $Plage_1 = long2ip($premierPlage_1) . ' - ' . long2ip($dernierPlage_1);
-    $broadcast_1 = $dernierPlage_1 + 1;
-
-
-    for ($i = 2; $i <= $nb_res; $i++) {
-        ${'addr_sous_res_' . $i} = ${'broadcast_' . ($i - 1)} + 1;
-        ${'premierPlage_' . $i} = ${'addr_sous_res_' . $i} + 1;
-        ${'dernierPlage_' . $i} = ${'premierPlage_' . $i} + (${'taille_alloue_' . $i} - 1);
-        ${'Plage_' . $i} = long2ip(${'premierPlage_' . $i}) . ' - ' . long2ip(${'dernierPlage_' . $i});
-        ${'broadcast_' . $i} = ${'dernierPlage_' . $i} + 1;
+    $mask_sous_res = -1 << (32 - $mask);
+    $addr_sous_res = $addr_bin & $mask_sous_res;
+    for ($i = 1; $i <= $nb_res; $i++) {
+        $tamp = addr_broad_plage_sous_res($addr_sous_res,$mask_sous_res,${'taille_alloue_'.$i});
+        ${'addr_sous_res_' . $i} = $tamp[0];
+        ${'Plage_' . $i} = $tamp[1];
+        ${'broadcast_' . $i} = $tamp[2];
+        $addr_sous_res = ${'broadcast_' . $i} +1;
+        $mask_sous_res = ${'mask_' . $i};
     }
 
     echo "<table>";
