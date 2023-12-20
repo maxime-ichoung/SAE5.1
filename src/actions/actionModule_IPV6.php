@@ -22,22 +22,27 @@ function ipv6_simplifiee($address){
     return inet_ntop(inet_pton($address));
 }
 
-function binaire_poids_fort($address) {
-    $packed_address = inet_pton($address);
-    $hex_str = bin2hex($packed_address);
-    $binary_str = '';
-    $hex_str_result = '';
+function binaire_poids_fort($adresse) {
+    $ipv6Bin = inet_pton($adresse);
+    $chaineHex = bin2hex($ipv6Bin);
+    $chaineBinaire = '';
+    $chaineHexResultat = '';
 
+    // Boucle sur les 4 premiers octets de la chaîne hexadécimale
     for ($i = 0; $i < 4; $i++) {
-        $byte = substr($hex_str, $i*2, 2);
-        $binary_byte = base_convert($byte, 16, 2);
-        $binary_byte_padded = str_pad($binary_byte, 8, '0', STR_PAD_LEFT);
-        $binary_str .= $binary_byte_padded . ' ';
-        $hex_str_result .= strtoupper($byte) . ' ';
+        // Extrait un octet (2 caractères hexa) de la chaîne hexa
+        $octet = substr($chaineHex, $i*2, 2);
+        // Convertit l'octet hexadécimal en binaire et le remplit à gauche avec des zéros pour obtenir 8 bits
+        $octetBinaire = str_pad(base_convert($octet, 16, 2), 8, '0', STR_PAD_LEFT);
+        // Ajoute l'octet binaire à la chaîne binaire
+        $chaineBinaire .= $octetBinaire . ' ';
+        // Ajoute l'octet hexa à la chaîne hexa
+        $chaineHexResultat .= strtoupper($octet) . ' ';
     }
 
-    return array('binaire' => trim($binary_str), 'hexa' => trim($hex_str_result));
+    return array('binaire' => trim($chaineBinaire), 'hexa' => trim($chaineHexResultat));
 }
+
 
 $result = binaire_poids_fort($ipv6);
 echo '<br>Adresse IPv6 simplifiée : ' . ipv6_simplifiee($ipv6);
