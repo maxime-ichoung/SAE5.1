@@ -1,68 +1,74 @@
 <?php
-function ipv6_simplifiee($adresse){
-    /**
-     * Cette fonction à pour but de simplifier une ipv6
-     *
-     * Entrée : string
-     *
-     * Sortie : String
-     */
+function simplifyV2($adresse){
+    //Parcours de la chaine de caractère afin de trouver le plus grand enchainement de "0"
+    $deb = 0; $fin = 0; $compt = 0; $compt_final = 0;
+    for ($i = 0 ; $i < strlen($adresse)-1;$i++){ //premier tour de boucle afin de trouver le plus grand enchaine de "0"
+        $j = $i;
+        while ($j < strlen($adresse)-1 and $adresse[$j] == "0" or $adresse[$j] == ":" ){ //récupère index de deb et de fin de cette suite de 0
 
-    // Parse l'ipv6 a chaque :
-
-    $parse_ipv6 = explode(":", $adresse);
-    echo "<br>";
-
-    // Enlève tous les 0 du debut de chaque chaine de parse_ipv6
-    for ($i = 0; $i < sizeof($parse_ipv6); $i++){
-        $parse_ipv6[$i] = ltrim($parse_ipv6[$i], "0");
-    }
-
-    $compt = 0; //Compteur visant à ne simplifier un double "0000" qu'une seule fois
-    $strAdresse = implode(":", $parse_ipv6); //Transformation de la liste en chaine de caractère
-    for ($i =0; $i<strlen($strAdresse);$i++){ //Parcours chaine
-        if ($i == 0 and $strAdresse[$i] == ":" and $strAdresse[$i+1] == ":"){
-            if ($strAdresse[$i+2] == ":"){
-                $j = $i;
-                while ($strAdresse[$j +2] == ":"){ //Boucle si jamais il y a plus de 2 "0000"
-                    $j ++;
-                }
-                $addAvant = substr($strAdresse, 0, $i); //Tout avant position i, non compris
-                $addApres = substr($strAdresse, $j); //Tout apres position i, i non compris
-                $strAdresse = $addAvant . $addApres;
+            if ($j == 0){ // Cas particulier où l'on commence sur un enchainement de 0
                 $compt = 1;
             }
-            else {
-                $compt = 1;
+            if ($adresse[$j] == ":" and $compt%5 != 0){ //Calcule le nombre de 0 comme ci chaque couple étais complets
+                $compt = $compt + (5 - $compt%5);
             }
-            $i++;
+            else {$compt++;}
+            $j++;
         }
-        else if($i < strlen($strAdresse)-2 and $strAdresse[$i] == ":" and $strAdresse[$i+2] == ":" and $compt != 1){ //Suppression d'un ":" dans un triple ":"
-            $j = $i;
-            while ($strAdresse[$j +2] == ":"){ ////Boucle si jamais il y a plus de 2 "0000"
-                $j ++;
+        if ($j == strlen($adresse)-1){ //Si l'on est arrivé a la fin de la chaine de caractère
+            $deb = $i; $fin = $j;
+            break;
+        }
+        if ($compt_final < $compt){ //Vérif si l'on trouve une chaine plus grande
+            $compt_final = $compt;
+            while ($adresse[$j-1] != ":"){
+                $j = $j-1; $compt_final = $compt_final -1;
             }
-            $addAvant = substr($strAdresse, 0, $i); //Tout avant position i, non compris
-            $addApres = substr($strAdresse, $j); //Tout apres position i, i non compris
-            $strAdresse = $addAvant . $addApres;
-            $compt = 1;
-            $i++;
+            $fin = $j;
+            $deb = $fin - $compt_final;
         }
-        else if (($i == strlen($strAdresse)-2 and $compt==0 and $strAdresse[$i] == ":" and $strAdresse[$i] == ":" )){
-            $compt =1;
+
+        $compt = 0;
+    }
+    //Supression de cet enchainement de "0"
+    if ($compt_final > 6 or $j == strlen($adresse)-1){
+        if ($fin == strlen($adresse)-1){
+            $adresseSimple = substr($adresse,0,$deb) . "::";
         }
-        else if ($i < strlen($strAdresse)-1 and $strAdresse[$i] == ":" and $strAdresse[$i+1] == ":") { //Mise en place d'un "0" entre un double ":"
-            $addAvant = substr($strAdresse, 0, $i + 1); //Tout avant position i
-            $addApres = substr($strAdresse, $i + 1); //Tout apres position i
-            $strAdresse = $addAvant . "0" . $addApres;
+        else if ($deb == 0){
+            $adresseSimple = ":" . substr($adresse,$fin-1);
+        }
+        else{
+            $adresseSimple = substr($adresse,0,$deb+1) . substr($adresse,$fin-1);
         }
     }
-    if ($strAdresse[strlen($strAdresse)-1] == ":" and $strAdresse[strlen($strAdresse)-2] != ":"){
-        $strAdresse = $strAdresse . "0";
+    else { $adresseSimple = $adresse;}
+
+    //On enlève maintenant l'ensemble des 0 inutile
+    $segments = explode(':', $adresseSimple);
+    //On exécute un premier tour de boucle afin de vérifier si il existe un segment déjà vide
+    if (count($segments) == 3){ //Cas particulier ou l'on n'as eu une adresse entièrement composé de 0
+        if (empty($segments[0] and $segments[1] and $segments[2] )){return $adresseSimple;}
     }
-    return $strAdresse;
+    for ($i=0;$i < count($segments)-1;$i++){
+        if (empty($segments[$i])){
+            $compt = $i;
+        }
+    }
+    // On parcours l'ensemble des segments pour en retiré les 0
+    if ($compt == 1){$i =1;} else{$i = 0;} //cas particulier l'enchainement de 0 se fait au début
+    for ($i ; $i< count($segments)-1; $i++) {
+        // Supprimer les zéros non significatifs
+        $segments[$i] = ltrim($segments[$i], '0');
+        // Si un segment est vide (c'était que des 0), le remplacer par '0'
+        if (empty($segments[$i]) and $i != $compt) {
+            $segments[$i] = '0';
+        }
+    }
+    // Reconstruire l'adresse IPv6
+    $adresseSimple =  implode(':', $segments);
+    return $adresseSimple;
 }
-
 /***
 * @param $adresse
 * @return string[]
