@@ -43,15 +43,14 @@
         <div class="col-md-auto">
             <label for="addr" class="form-label">Adresse IPV4 :</label>
         </div>
-        <div class="col-md-auto">
+        <div class="col-md-8">
             <div class="input-group">
                 <input type="text" class="form-control" id="addr" name="addr" required pattern="^((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])$" value="<?php echo $addr_aff ?>">
                 <span class="input-group-text">/</span>
                 <input type="number" class="form-control" id="mask" name="mask" min="1" max="32" value="<?php echo $mask_aff ?>" required>
             </div>
         </div>
-
-        <div class="col-md-6">
+        <div class="col-md-auto">
             <table class="table">
                 <thead>
                 <tr>
