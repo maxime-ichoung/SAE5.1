@@ -11,13 +11,26 @@ if(isset($_POST['nb_res'])){
 else{
     $nb_res = 4;
 }
+if(isset($_POST['addr'])){
+    $addr_aff = $_POST['addr'];
+}
+else{
+    $addr_aff = '';
+}
+if(isset($_POST['mask'])){
+    $mask_aff = $_POST['mask'];
+}
+else{
+    $mask_aff = '';
+}
+
 ?>
 <form action="./Module_IPV4.php" method="post" name="formul_nb_res" id="formul_nb_res">
     Nombre de sous réseaux souhaités : <input type="number" name="nb_res" value="<?php echo $nb_res ?>">  <input type="submit" value="Valider" name="ok_nb_res">
 </form>
 <br>
 <form action="./actionModule_IPV4.php" method="post" name="formul_sous_res" onsubmit="return valider()" id="formul_sous_res">
-    Adresse IPV4 : <input type="text" name="addr" required pattern="^((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])$"> / <input type="number" name="mask" min="1" max="32" required>
+    Adresse IPV4 : <input type="text" name="addr" required pattern="^((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])$" value="<?php echo $addr_aff ?>"> / <input type="number" name="mask" min="1" max="32" value="<?php echo $mask_aff ?>" required>
     <br>
     <br>
     <?php
