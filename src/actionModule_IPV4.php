@@ -65,17 +65,24 @@ if(isset($_POST['ok_calc'], $_POST['nb_res'], $_POST['addr'], $_POST['mask'])){
     # Calcul du masque décimal du réseau principal
     $mask_major = mask_cdri_vers_dec($mask);
     #Calcul de l'adresse, du broadcast et de la plage d'adresse de chaque sous réseaux
-    $part_mask = explode('.',$mask_major);
-    $part_addr = explode('.',$addr);
-    $part_addr_sous_res = $part_addr;
-    for($i=0; $i<=3; $i++){
-        if($part_mask[$i] < 255){
-            $part_addr_sous_res[$i] = 0;
-        }
+
+    $addr_bin = ip2long($addr);
+    $mask_res_bin = -1 << (32 - $mask);
+
+    $addr_sous_res_1 = $addr_bin & $mask_res_bin;
+    $premierPlage_1 = $addr_sous_res_1 + 1;
+    $dernierPlage_1 = $premierPlage_1 + ($taille_alloue_1-1);
+    $Plage_1 = long2ip($premierPlage_1).' - '.long2ip($dernierPlage_1);
+    $broadcast_1 = $dernierPlage_1 + 1;
+
+
+    for($i=2;$i<=$nb_res;$i++){
+        ${'addr_sous_res_'.$i} = ${'broadcast_'.($i-1)} + 1;
+        ${'premierPlage_'.$i} = ${'addr_sous_res_'.$i} + 1;
+        ${'dernierPlage_'.$i} = ${'premierPlage_'.$i} + (${'taille_alloue_'.$i}-1);
+        ${'Plage_'.$i} = long2ip(${'premierPlage_'.$i}).' - '.long2ip(${'dernierPlage_'.$i});
+        ${'broadcast_'.$i} = ${'dernierPlage_'.$i} + 1;
     }
-    echo 'addr reseau : '.$part_addr_sous_res[0].'.'.$part_addr_sous_res[1].'.'.$part_addr_sous_res[2].'.'.$part_addr_sous_res[3];
-
-
 }
 echo "<table>";
 echo "<tr><th><p>Sous réseaux</p></th><th><p>Taille souhaitée</p></th><th><p>Taille allouée</p></th><th><p>Adresse</p></th><th><p>Masque</p></th><th><p>Masque décimal</p></th><th><p>Ensemble d'adresse attribuable</p></th><th><p>Broadcast</p></th></tr>";
@@ -86,9 +93,11 @@ while($res < $nb_res+1){
     echo "<td>$res</td>";
     echo "<td>"; echo $_POST[$taille_res]; echo"</td>";
     echo "<td>"; echo ${'taille_alloue_'.$res}; echo "</td>";
-    echo "<td>"; echo "</td>";
+    echo "<td>"; echo long2ip(${'addr_sous_res_'.$res}); echo "</td>";
     echo "<td>"; echo '/'.${'mask_'.$res}; echo "</td>";
     echo "<td>"; echo ${'mask_dec_'.$res}; echo "</td>";
+    echo "<td>"; echo ${'Plage_'.$res}; echo"</td>";
+    echo "<td>"; echo long2ip(${'broadcast_'.$res}); echo"</td>";
     echo "</tr>";
     $res++;
 }
