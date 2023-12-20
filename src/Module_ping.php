@@ -18,13 +18,20 @@
         </nav>
 
         <h2>Ping une Adresse Web/IP</h2>
-        <input type="text" id="addresse" placeholder="Entrez une adresse web ou IP">
-        <input type="number" id="nb_ping" value="4" min="1" max="10" placeholder="Nombre de pings (max 10)">
-        <button label="adress" onclick="ping()">Ping</button>
-        <div id="result"></div>
 
+        <form id="pingForm">
+            <div class="mb-3">
+                <label for="addresse" class="form-label">Adresse Web/IP:</label>
+                <input type="text" class="form-control" id="addresse" placeholder="Entrez une adresse web ou IP">
+            </div>
+            <div class="mb-3">
+                <label for="nb_ping" class="form-label">Nombre de pings (max 10):</label>
+                <input type="number" class="form-control" id="nb_ping" value="4" min="1" max="10">
+            </div>
+            <button type="button" class="btn btn-primary" onclick="ping()">Ping</button>
+        </form>
 
-        
+        <div id="result" class="mt-4"></div>
     </main>
 
     <?php include("Footer.html") ?>
