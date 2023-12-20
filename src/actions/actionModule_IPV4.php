@@ -6,19 +6,24 @@ if(isset($_POST['ok_calc'], $_POST['nb_res'], $_POST['addr'], $_POST['mask'])) {
     $nb_hosts = (2 ** (32 - $mask)) - 2;
 
     # Algorithme de calcul de la taille et du masque alloué à chaque sous réseaux
+    function taille_mask_sous_res($taille_sous_res){
+        for ($j = 30; $j > 8; $j--) {
+            $taille_alloue = (2 ** (32 - $j)) - 2;
+            if ($taille_sous_res <= $taille_alloue) {
+                $mask_sous_res = $j;
+                return [$taille_alloue,$mask_sous_res];
+            }
+        }
+    }
+
+
     $taille_alloue_totale = 0;
     for ($i = 1; $i <= $nb_res; $i++) {
         $taille_res = 'taille_res_' . $i;
         $taille_actuel = $_POST[$taille_res];
-        for ($j = 30; $j > 8; $j--) {
-            $taille_alloue = (2 ** (32 - $j)) - 2;
-            if ($taille_actuel <= $taille_alloue) {
-                ${'taille_alloue_' . $i} = $taille_alloue;
-                ${'mask_' . $i} = $j;
-                $taille_alloue_totale += $taille_alloue;
-                break;
-            }
-        }
+        $tamp = taille_mask_sous_res($taille_actuel);
+        ${'taille_alloue_' . $i} = $tamp[0];
+        ${'mask_' . $i} = $tamp[1];
     }
 
     # Mécanisme de filtration des demandes de divisions trop grandes par rappport au réseau fournis
