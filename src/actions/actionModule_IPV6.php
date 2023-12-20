@@ -1,18 +1,5 @@
 <?php
-if(isset($_POST['ipv6'])){
-    $ipv6 = $_POST['ipv6'];
-    echo $ipv6;
-
-    // Renvoie des resultats vers la vue
-    session_start();
-    $resultat = binaire_poids_fort($ipv6);
-    $_SESSION['ipv6_simplifiee'] = ipv6_simplify($ipv6);
-    $_SESSION['octets_binaire'] = $resultat['binaire'];
-    $_SESSION['octets_hexa'] = $resultat['hexa'];
-    header("Location: ../Module_IPV6.php");
-}
-
-function ipv6_simplify($adresse){
+function ipv6_simplifiee($adresse){
     /**
      * Cette fonction à pour but de simplifier une ipv6
      *
@@ -20,12 +7,13 @@ function ipv6_simplify($adresse){
      *
      * Sortie : String
      */
+
     // Parse l'ipv6 a chaque :
+
     $parse_ipv6 = explode(":", $adresse);
     echo "<br>";
 
-
-// Enlève tous les 0 du debut de chaque chaine de parse_ipv6
+    // Enlève tous les 0 du debut de chaque chaine de parse_ipv6
     for ($i = 0; $i < sizeof($parse_ipv6); $i++){
         $parse_ipv6[$i] = ltrim($parse_ipv6[$i], "0");
     }
@@ -75,6 +63,10 @@ function ipv6_simplify($adresse){
     return $strAdresse;
 }
 
+/***
+* @param $adresse
+* @return string[]
+ */
 function binaire_poids_fort($adresse) {
     $ipv6Binaire = inet_pton($adresse);
     $chaineHex = bin2hex($ipv6Binaire);
