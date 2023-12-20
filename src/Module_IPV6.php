@@ -34,11 +34,11 @@
             $ipv6 = $_POST['ipv6'];
             $ipv6_simplifiee = ipv6_simplifiee($ipv6);
             $resultat = binaire_poids_fort($ipv6);
-            echo "Adresse IPV6 simplifier : " . $ipv6_simplifiee;
-            echo '<br>Affichage binaire et hexadécimal des deux octets les plus significatifs : ';
-            echo '<br>Hexa: ' . $resultat['hexa'] . ', Binaire: ' . $resultat['binaire'];
+            echo "<strong>Adresse IPV6 simplifiée : </strong>" . $ipv6_simplifiee;
+            echo '<br><strong>Affichage binaire et hexadécimal des deux octets les plus significatifs : </strong>';
+            echo '<br><strong>Hexa: </strong>' . $resultat['hexa'] . ' ; <strong>Binaire: </strong>' . $resultat['binaire'];
             for ($i = 0; $i < 2; $i++) {
-                echo '<br>Hexa: ' . substr($resultat['hexa'], $i*2, 2) . ', Binaire: ' . substr($resultat['binaire'], $i*8, 8);
+                echo '<br><strong>Hexa: </strong>' . substr($resultat['hexa'], $i*2, 2) . ' ; <strong>Binaire: </strong>' . substr($resultat['binaire'], $i*8, 8);
             }
         }
         ?>

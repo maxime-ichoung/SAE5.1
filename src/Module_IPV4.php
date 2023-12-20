@@ -1,4 +1,5 @@
 <?php session_start(); ?>
+<!doctype html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -11,7 +12,7 @@
 <?php include("Header.html") ?>
 
 <main class="container mt-5">
-    <!-- Fil d'ariane -->
+    <!-- Breadcrumb -->
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="Home.php">Home</a></li>
@@ -20,55 +21,62 @@
     </nav>
 
     <?php
-    if(isset($_POST['nb_res'])){
-        $nb_res = $_POST['nb_res'];
-    }
-    else{
-        $nb_res = 4;
-    }
-    if(isset($_POST['addr'])){
-        $addr_aff = $_POST['addr'];
-    }
-    else{
-        $addr_aff = '';
-    }
-    if(isset($_POST['mask'])){
-        $mask_aff = $_POST['mask'];
-    }
-    else{
-        $mask_aff = '';
-    }
-
+    $nb_res = $_POST['nb_res'] ?? 4;
+    $addr_aff = $_POST['addr'] ?? '';
+    $mask_aff = $_POST['mask'] ?? '';
     ?>
-    <form action="./Module_IPV4.php" method="post" name="formul_nb_res" id="formul_nb_res">
-        Nombre de sous réseaux souhaités : <input type="number" name="nb_res" value="<?php echo $nb_res ?>">  <input type="submit" value="Valider" name="ok_nb_res">
+
+    <form action="./Module_IPV4.php" method="post" name="formul_nb_res" id="formul_nb_res" class="row g-3">
+        <div class="col-auto">
+            <label for="nb_res" class="form-label">Nombre de sous réseaux souhaités :</label>
+        </div>
+        <div class="col-auto">
+            <input type="number" class="form-control" id="nb_res" name="nb_res" value="<?php echo $nb_res ?>">
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary" name="ok_nb_res">Valider</button>
+        </div>
     </form>
     <br>
-    <form action="actions/actionModule_IPV4.php" method="post" name="formul_sous_res" onsubmit="return valider()" id="formul_sous_res">
-        Adresse IPV4 : <input type="text" name="addr" required pattern="^((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])$" value="<?php echo $addr_aff ?>"> / <input type="number" name="mask" min="1" max="32" value="<?php echo $mask_aff ?>" required>
-        <br>
-        <br>
-        <?php
-        echo "<table>";
-        echo "<tr><th><p>Sous réseaux</p></th><th><p>Taille</p></th></tr>";
-        $res = 1;
-        while($res < $nb_res+1){
-            $taille_res = 'taille_res_'.$res;
-            echo "<tr>";
-            echo "<td>$res</td>";
-            echo "<td><input type='number' name=$taille_res min='1' required> </td>";
-            echo "</tr>";
-            $res++;
-        }
-        echo "</table>
-<input type='hidden' name='nb_res' value=$nb_res>
-";
 
-        ?>
-        <br>
-        <br>
-        <input type="submit" value="Calculer" name="ok_calc">
+    <form action="actions/actionModule_IPV4.php" method="post" name="formul_sous_res" onsubmit="return valider()" id="formul_sous_res" class="row g-3">
+        <div class="col-md-auto">
+            <label for="addr" class="form-label">Adresse IPV4 :</label>
+        </div>
+        <div class="col-md-auto">
+            <div class="input-group">
+                <input type="text" class="form-control" id="addr" name="addr" required pattern="^((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])$" value="<?php echo $addr_aff ?>">
+                <span class="input-group-text">/</span>
+                <input type="number" class="form-control" id="mask" name="mask" min="1" max="32" value="<?php echo $mask_aff ?>" required>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Sous réseaux</th>
+                    <th scope="col">Taille</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php
+                $res = 1;
+                while($res < $nb_res+1){
+                    $taille_res = 'taille_res_'.$res;
+                    echo "<tr>";
+                    echo "<th scope='row'>$res</th>";
+                    echo "<td><input type='number' name=$taille_res class='form-control' min='1' required> </td>";
+                    echo "</tr>";
+                    $res++;
+                }
+                echo "</tbody></table>";
+                echo "<input type='hidden' name='nb_res' value=$nb_res>";
+                ?>
+
+        <button type="submit" class="btn btn-primary" name="ok_calc">Calculer</button>
     </form>
+
     <?php
     if(isset($_POST['erreur_taille'])){
         unset($_POST['erreur_taille']);
