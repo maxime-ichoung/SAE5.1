@@ -2,6 +2,14 @@
 if(isset($_POST['ipv6'])){
     $ipv6 = $_POST['ipv6'];
     echo $ipv6;
+
+    // Renvoie des resultats vers la vue
+    session_start();
+    $resultat = binaire_poids_fort($ipv6);
+    $_SESSION['ipv6_simplifiee'] = ipv6_simplifiee($ipv6);
+    $_SESSION['octets_binaire'] = $resultat['binaire'];
+    $_SESSION['octets_hexa'] = $resultat['hexa'];
+    header("Location: ../Module_IPV6.php");
 }
 // Parse l'ipv6 a chaque :
 $parse_ipv6 = explode(":", $ipv6);
@@ -35,18 +43,10 @@ function binaire_poids_fort($adresse) {
         // Convertit l'octet hexadécimal en binaire et le remplit à gauche avec des zéros pour obtenir 8 bits
         $octetBinaire = str_pad(base_convert($octet, 16, 2), 8, '0', STR_PAD_LEFT);
         // Ajoute l'octet binaire à la chaîne binaire
-        $chaineBinaire .= $octetBinaire . ' ';
+        $chaineBinaire .= $octetBinaire;
         // Ajoute l'octet hexa à la chaîne hexa
-        $chaineHexResultat .= strtoupper($octet) . ' ';
+        $chaineHexResultat .= strtoupper($octet);
     }
 
     return array('binaire' => $chaineBinaire, 'hexa' => $chaineHexResultat);
-}
-
-
-$result = binaire_poids_fort($ipv6);
-echo '<br>Adresse IPv6 simplifiée : ' . ipv6_simplifiee($ipv6);
-echo '<br>Affichage binaire et hexadécimal des deux octets les plus significatifs : ';
-for ($i = 0; $i < 2; $i++) {
-    echo '<br>Hexa: ' . substr($result['hexa'], $i*3, 2) . ', Binaire: ' . substr($result['binaire'], $i*9, 8);
 }
