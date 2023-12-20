@@ -23,13 +23,13 @@ function ipv6_simplifiee($address){
 }
 
 function binaire_poids_fort($adresse) {
-    $ipv6Bin = inet_pton($adresse);
-    $chaineHex = bin2hex($ipv6Bin);
+    $ipv6Binaire = inet_pton($adresse);
+    $chaineHex = bin2hex($ipv6Binaire);
     $chaineBinaire = '';
     $chaineHexResultat = '';
 
     // Boucle sur les 4 premiers octets de la chaîne hexadécimale
-    for ($i = 0; $i < 4; $i++) {
+    for ($i = 0; $i < 2; $i++) {
         // Extrait un octet (2 caractères hexa) de la chaîne hexa
         $octet = substr($chaineHex, $i*2, 2);
         // Convertit l'octet hexadécimal en binaire et le remplit à gauche avec des zéros pour obtenir 8 bits
@@ -40,13 +40,13 @@ function binaire_poids_fort($adresse) {
         $chaineHexResultat .= strtoupper($octet) . ' ';
     }
 
-    return array('binaire' => trim($chaineBinaire), 'hexa' => trim($chaineHexResultat));
+    return array('binaire' => $chaineBinaire, 'hexa' => $chaineHexResultat);
 }
 
 
 $result = binaire_poids_fort($ipv6);
 echo '<br>Adresse IPv6 simplifiée : ' . ipv6_simplifiee($ipv6);
 echo '<br>Affichage binaire et hexadécimal des deux octets les plus significatifs : ';
-for ($i = 0; $i < 4; $i++) {
+for ($i = 0; $i < 2; $i++) {
     echo '<br>Hexa: ' . substr($result['hexa'], $i*3, 2) . ', Binaire: ' . substr($result['binaire'], $i*9, 8);
 }
