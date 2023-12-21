@@ -13,30 +13,52 @@ Dans un premier temps, il vous faut désinstaller l'ensemble des packages lié �
 for pkg in docker.io docker-doc docker-compose podman-docker containerd runc; do sudo apt-get remove $pkg; done
 ```
 
-Pour l'installation de Docker sur CentOS il faudra dans un second temps ajouter le dépôt depuis Docker pour être sur d'installer la bonne version de docker. Pour cela il faudra utiliser la commande suivante :
+Pour l'installation de Docker sur Debian, il faudra, dans un second temps, ajouter le dépôt depuis Docker pour être sûr d'installer la bonne version de Docker. Pour cela, il faudra utiliser les commandes suivantes :
 
+Ajout de la clé GPG officielle de Docker :
 ```bash
-## TODO
+sudo apt-get update
+sudo apt-get install ca-certificates curl gnupg
+sudo install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+sudo chmod a+r /etc/apt/keyrings/docker.gpg
 ```
 
-Une fois le dépôt ajouté on lance l'installation des bonnes versions des outils nécessaires avec la commande :
-
+Ajout du répertoire dans les sources apt :
 ```bash
-## TODO
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian \
+  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt-get update
 ```
 
-Après l'installation il suffira de lancer le service :
+Une fois le dépôt ajouté, lancez l'installation des bonnes versions des outils nécessaires avec la commande :
+
+```bash
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+```
+
+Après l'installation, il suffira de lancer le service :
 
 ```bash
 sudo systemctl start docker
 ```
-Félicitation vous avez installé Docker Engine. 
+Félicitations, vous avez installé Docker Engine.
 
 ## Lancement du serveur web
-Maintenant pour lancer le conteneur il faut vous placer à la racine du projet dans une invite de commande, taper la commande suivante :
+Le lancement du conteneur se fera en deux étapes : la construction de l'image à l'aide du Dockerfile, puis le lancement de cette image.
+
+Pour la construction de l'image, placez-vous dans le même dossier que le `Dockerfile`, c'est-à-dire à la racine de notre dépôt Git, puis lancez la commande :
 
 ```bash
-sudo docker-compose up -d
+sudo docker build -t sae5 .
 ```
 
-Il vous suffit de vous connecter au serveur Web via un navigateur avec l'adresse : localhost:8080.
+Une fois l'exécution terminée, vous pouvez lancer la dernière commande, toujours dans le même répertoire, qui va lancer notre image :
+
+```bash
+sudo docker run -p 8080:80 sae5
+```
+
+Il vous suffit de vous connecter au serveur Web via un navigateur avec l'adresse : `localhost:8080`.
