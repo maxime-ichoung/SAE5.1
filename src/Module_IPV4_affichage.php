@@ -22,7 +22,7 @@
 
     <?php
     if(isset($_POST['ok_calc'], $_POST['nb_res'], $_POST['addr'], $_POST['mask'])) {
-        require ("actions/fichier_fonction_temporaire_moduleIPV4.php");
+        require ("actions/actionModule_IPV4.php");
         $nb_res = $_POST['nb_res'];
         $addr = $_POST['addr'];
         $mask = $_POST['mask'];
