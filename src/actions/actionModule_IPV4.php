@@ -2,15 +2,15 @@
 # Algorithme de calcul de la taille et du masque alloué à chaque sous réseaux
 function taille_mask_sous_res($taille_sous_res){
     /**
-     * Fonction qui calcule la taille et le masque allouée d'un sous réseaux en fonction de la taille souhaitée. La taille alloue
-     * correspond à (puissance de 2) - 2 > à taille souhaitée. Le masque est calculée comme suit : mask = n, avec
+     * Fonction qui calcule la taille et le masque alloué d'un sous réseaux en fonction de la taille souhaitée. La taille allouée
+     * correspond à (puissance de 2) - 2 > à taille souhaitée. Le masque est calculé comme suit : mask = n, avec
      * n correspondant à  (2**(32-n)) - 2 = taille allouée, n compris entre 8 et 30.
      *
      * Exemple : pour une taille souhaitée de 7, la taille allouée sera 14 car 14 = 16 - 2 = (2**4) - 2, (2**3) ne
-     * conviendrai pas car (2**3) - 2 = 8 - 2 = 6 or 6 < 7. Le masque sera 28 car 32 - 28 = 4 or taille allouée est égale
-     * à (2**4) - 2
+     * conviendrai pas car (2**3) - 2 = 8 - 2 = 6 or 6 < 7. Le masque sera 28, car 32 - 28 = 4, or taille allouée est égale
+     * à (2**4) - 2.
      *
-     * Entrée : un integer, la taille souhaitée
+     * Entrée : un integer, la taille souhaitée.
      *
      * Sortie : un tableau de taille 2, contenant la taille allouée en indice 0 et le masque en indice 1.
      */
@@ -69,11 +69,11 @@ function addr_broad_plage_sous_res($addr,$taille_alloue){
      * IP qui lui est allouée ainsi que son adresse de broadcast.
      *
      * Exemple : un réseau d'adresse 128.0.0.0 et de taille allouée 62 se vera attribué la plage d'adresses IP :
-     * 128.0.0.1 - 128.0.0.62 et l'adresse de broadcast : 128.0.0.63
+     * 128.0.0.1 - 128.0.0.62 et l'adresse de broadcast : 128.0.0.63 .
      *
-     * Entrée : un long, l'adresse IP du réseau sous forme de long integer | un integer, la taille allouée au réseau
+     * Entrée : un long, l'adresse IP du réseau sous forme de long integer | un integer, la taille allouée au réseau.
      *
-     * Sortie : un tableau de taille 3 avec l'adresse IP du réseau sous form de long en indice 0, la plage d'adresses IP
+     * Sortie : un tableau de taille 3 avec l'adresse IP du réseau sous forme de long en indice 0, la plage d'adresses IP
      * attribuée sous forme de chaîne de caractère en indice 1 et l'adresse de broadcast sous forme de long en indice 2.
      */
     $premierPlage = $addr + 1;
