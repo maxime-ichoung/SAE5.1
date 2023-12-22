@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="styles/bootstrap.css" rel="stylesheet">
     <link href="styles/styles.css" rel="stylesheet">
-    <title>Accueil</title>
+    <title>IPV6</title>
 </head>
 <body>
     <?php include("Header.html") ?>
@@ -18,7 +18,7 @@
             </ol>
         </nav>
 
-        <h2>Formulaire IPV6</h2>
+        <h2 class="mb-4">Simplification et octets de poids fort IPV6</h2>
 
         <form action="Module_IPV6.php" method="post">
             <label for="ipv6">Adresse IPv6:</label><br>

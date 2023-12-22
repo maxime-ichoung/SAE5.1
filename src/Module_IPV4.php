@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="styles/bootstrap.css" rel="stylesheet">
     <link href="styles/styles.css" rel="stylesheet">
-    <title>Accueil</title>
+    <title>IPV4</title>
 </head>
 <body onload="alert_taille()">
     <?php include("Header.html") ?>
@@ -25,6 +25,8 @@
         $addr_aff = $_POST['addr'] ?? '';
         $mask_aff = $_POST['mask'] ?? '';
         ?>
+
+        <h2 class="mb-4">Calculateur de sous réseaux</h2>
 
         <form action="./Module_IPV4.php" method="post" name="formul_nb_res" id="formul_nb_res" class="row g-3">
             <div class="col-auto">

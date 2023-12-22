@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="styles/bootstrap.css" rel="stylesheet">
     <link href="styles/styles.css" rel="stylesheet">
-    <title>Accueil</title>
+    <title>IPV4 résultats</title>
 </head>
 <body>
 <?php include("Header.html") ?>

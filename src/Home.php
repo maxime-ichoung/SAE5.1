@@ -57,54 +57,35 @@
     <?php include("Header.html") ?>
 
     <main class="container mt-5">
-        <!-- Fil d'ariane -->
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item active" aria-current="page">Home</li>
-            </ol>
-        </nav>
 
-        <p>Bienvenue sur la page d'accueil</p>
+        <h2 class="mb-5 d-flex justify-content-center align-items-center">Bienvenue sur la page d'accueil</h2>
 
-        <div class="row">
+        <div class="row d-flex justify-content-center align-items-center">
             <div class="col-auto">
-                <div class="card">
-                    <div class="card-body">
-                        <a href="Module_ping.php">
-                            <figure>
-                                <img src="https://picsum.photos/id/287/250/300" alt="Mountains">
-                                <figcaption>Module Ping</figcaption>
-                            </figure>
-                        </a>
-                    </div>
-                </div>
+                <a href="Module_ping.php">
+                    <figure>
+                        <img src="../assets/images/Ping.jpg" width="300px" alt="Mountains">
+                        <figcaption>Module Ping</figcaption>
+                    </figure>
+                </a>
             </div>
             <div class="col-auto">
-                <div class="card">
-                    <div class="card-body">
-                        <a href="Module_IPV4.php">
-                            <figure>
-                                <img src="https://picsum.photos/id/287/250/300" alt="Mountains">
-                                <figcaption>Module IPV4</figcaption>
-                            </figure>
-                        </a>
-                    </div>
-                </div>
+                <a href="Module_IPV4.php">
+                    <figure>
+                        <img src="../assets/images/IPV4.jpg" width="300px" alt="Mountains">
+                        <figcaption>Module IPV4</figcaption>
+                    </figure>
+                </a>
             </div>
             <div class="col-auto">
-                <div class="card">
-                    <div class="card-body">
-                        <a href="Module_IPV6.php">
-                            <figure>
-                                <img src="https://picsum.photos/id/287/250/300" alt="Mountains">
-                                <figcaption>Module IPV6</figcaption>
-                            </figure>
-                        </a>
-                    </div>
-                </div>
+                <a href="Module_IPV6.php">
+                    <figure>
+                        <img src="../assets/images/IPV6.jpg" width="300px" alt="Mountains">
+                        <figcaption>Module IPV6</figcaption>
+                    </figure>
+                </a>
             </div>
         </div>
-
     </main>
 
     <?php include("Footer.html") ?>
