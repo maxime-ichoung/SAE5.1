@@ -57,30 +57,36 @@ Le but est de partitionner l'entrée des tests pour minimiser les tests à réal
 <h4>2. Tests</h4>
 
 <table>
-<tr> <td colspan="2"> Identification du test : test Module IPV4 </td> <td colspan="2"> Version : 1.0 </td> </tr>
-<tr> <td colspan="4"> Description du test : test de l'algorithme de calcul de la taille et du masque alloué à chaque sous réseaux - fonction "taille_mask_sous_res", par la méthode 
+<tr> <td colspan="3"> Identification du test : test fonction "taille_mask_sous_res" </td> <td colspan="2"> Version : 1.0 </td> </tr>
+<tr> <td colspan="5"> Description du test : test de l'algorithme de calcul de la taille et du masque alloué à chaque sous réseaux - fonction "taille_mask_sous_res", par la méthode 
 de partition d'équivalence. Soit A l'ensemble des entiers positifs supérieur à 0 (A = ]0;+∞[), B l'ensemble des puissances de 2 jusqu'à la 24ème puissance (B = [2**1;2**2;...;2**24]), soit C l'ensemble des entiers allant de 1 à 32 (C = [1;2;3;...;32]) et soit B1 définit par B1 = B - 2 (B1 = [(2**1)-2;(2**2)-2;...;(2**24)-2]).</td> </tr>
+<tr> <td colspan="5"> Ressources requises : / </td> </tr>
+<tr> <td colspan="5"> Responsable : Hugo Verneuil</td> </tr>
+<tr><th>Classe</th><th>Acteur 1 (taille_souhaite)</th><th>Résultat attendu 1 (taille_alloue)</th><th>Résultat attendu 2 (masque)</th><th>Résultat obtenus</th></tr>
+<tr><td>P1</td><td>taille_souhaite ∈ A, taille_souhaite <= (2**24)-2</td><td>taille_alloue ∈ A, taille_alloue >= taille_souhaite, taille_alloue <= (2**24)-2</td><td>masque ∈ C, masque = 32 - fraction_arrondie_supérieur(log(2**taille_alloue)) </td><td>OK</td></tr>
+<tr><td>P2</td><td>taille_souhaite ∈ A, taille_souhaite > (2**24)-2</td><td>taille_souhaite ∈ A, taille_alloue = 2**25</td><td>masque = 0</td><td>OK</td></tr>
+</table>
+<br>
+<table>
+<tr> <td colspan="3"> Identification du test : test fonction "mask_cdri_vers_dec" </td> <td colspan="2"> Version : 1.0 </td> </tr>
+<tr> <td colspan="4"> Description du test : test de l'algorithme de conversion masque CIDR vers masque décimaux - fonction "mask_cdri_vers_dec", par la méthode 
+de partition d'équivalence. Soit A l'ensemble des entiers allant de 1 à 32 (A = [1;2;3;...;32]), soit B l'ensemble des chaînes de caractères et soit B1 l'ensemble des châines de caractères respectant le format : "((0|128|192|224|240|248|252|254|255)\.){3}(0|128|192|224|240|248|252|254|255)", c'est à dire l'ensemble des valeurs décimal possible d'un masque IPV4 sous forme de chaîne de cractères.  </td> </tr>
 <tr> <td colspan="4"> Ressources requises : / </td> </tr>
 <tr> <td colspan="4"> Responsable : Hugo Verneuil</td> </tr>
-<tr><th>Classe</th><th>Acteur 1 (taille_souhaite)</th><th>Résultat attendu 1 (taille_alloue)</th><th>Résultat attendu 2 (masque)</th></tr>
-<tr><td>P1</td>taille_souhaite ∈ A, taille_souhaite <= (2**24)-2<td>taille_alloue ∈ A, taille_alloue >= taille_souhaite, taille_alloue <= (2**24)-2</td><td>masque ∈ C, masque = 32 - fraction_arrondie_supérieur(log(2**taille_alloue)) </td></tr>
-<tr><td>P2</td><td>taille_souhaite ∈ A, taille_souhaite > (2**24)-2</td><td>erreur/echec</td><td>erreur/echec</td></tr>
+<tr><th>Classe</th><th>Acteur (mask_actuel)</th><th>Résultat attendu (mask_dec)</th><th>Résultat obtenus</th></tr>
+<tr><td>P1</td><td>mask_actuel ∈ A</td><td>mask_dec ∈ B1 </td><td>OK</td></tr>
+<tr><td>P2</td><td>mask_actuel ∉ A</td><td>mask_dec ∈ B, mask_dec = "-1"</td><td>OK</td></tr>
 </table>
-
+<br>
 <table>
-<tr> <td> Identification du test : test Module IPV4 </td> <td> Version : 1.0 </td> </tr>
-<tr> <td colspan="2"> Description du test : test de l'algorithme de conversion masque CIDR vers masque décimaux - fonction "mask_cdri_vers_dec", par la méthode 
-de partition d'équivalence. </td> </tr>
-<tr> <td colspan="2"> Ressources requises : / </td> </tr>
-<tr> <td colspan="2"> Responsable : Hugo Verneuil</td> </tr>
-
-</table>
-
-<table>
-<tr> <td> Identification du test : test Module IPV4 </td> <td> Version : 1.0 </td> </tr>
-<tr> <td colspan="2"> Description du test : test de l'algorithme de calcul du broadcast et de la plage d'adresse de chaque sous réseaux - fonction "addr_broad_plage_sous_res", par la méthode 
-de partition d'équivalence. </td> </tr>
-<tr> <td colspan="2"> Ressources requises : / </td> </tr>
-<tr> <td colspan="2"> Responsable : Hugo Verneuil</td> </tr>
-
+<tr> <td colspan="4"> Identification du test : test fonction "addr_broad_plage_sous_res" </td> <td colspan="3"> Version : 1.0 </td> </tr>
+<tr> <td colspan="7"> Description du test : test de l'algorithme de calcul du broadcast et de la plage d'adresse de chaque sous réseaux - fonction "addr_broad_plage_sous_res", par la méthode 
+de partition d'équivalence. Soit A l'ensemble des long integer résultant d'une conversion IP vers long, soit B l'ensemble des puissances de 2 jusqu'à la 24ème puissance (B = [2**1;2**2;...;2**24]) et soit B1 définit par B1 = B - 2 (B1 = [(2**1)-2;(2**2)-2;...;(2**24)-2]) et soit C l'ensemble des chaînes de caractères. </td> </tr>
+<tr> <td colspan="7"> Ressources requises : / </td> </tr>
+<tr> <td colspan="7"> Responsable : Hugo Verneuil</td> </tr>
+<tr><th>Classe</th><th>Acteur 1 (addr)</th><th>Acteur 2 (taille_alloue)</th><th>Résultat attendu 1 (addr)</th><th>Résultat attendu 2 (Plage)</th><th>Résultat attendu 3 (broadcast)</th><th>Résultat obtenus</th></tr>
+<tr><td>P1</td><td>addr ∈ A</td><td>taille_alloue ∈ B1</td><td>addr ∈ A</td><td>Plage ∈ C</td><td>broadcast ∈ A</td><td>OK</td></tr>
+<tr><td>P2</td><td>addr ∉ A</td><td>taille_alloue ∉ B1</td><td>addr ∈ A</td><td>Plage ∈ C</td><td>broadcast ∈ A</td><td>OK</td></tr>
+<tr><td>P3</td><td>addr ∉ A</td><td>taille_alloue ∈ B1</td><td>addr ∈ A</td><td>Plage ∈ C</td><td>broadcast ∈ A</td><td>OK</td></tr>
+<tr><td>P4</td><td>addr ∈ A</td><td>taille_alloue ∉ B1</td><td>addr ∈ A</td><td>Plage ∈ C</td><td>broadcast ∈ A</td><td>OK</td></tr>
 </table>
