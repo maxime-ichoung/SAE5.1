@@ -2,20 +2,21 @@
 
 
 use PHPUnit\Framework\TestCase;
-//Partition : , , , , , , melange plusieur "0000" d'afilé
-$ipv6_a = ["0000:0000:abcd:1234:b123:dc12:87aa:bbcc","0000:0000:0000:0000:0000:0000:1234:1234"]; // 2/+ "0000" deb
-$ipv6_b = ["abcd:1234:b123:dc12:87aa:bbcc:0000:0000","1234:1234:0000:0000:0000:0000:0000:0000"]; // 2/+ "0000" fin
-$ipv6_c = ["0000:abcd:1234:b123:dc12:87aa:bbcc:98dc"]; // 1 "0000" deb
-$ipv6_d = ["abcd:1234:b123:dc12:87aa:bbcc:98dc:0000"]; // 1 "0000" fin
-$ipv6_e = ["abcd:0034:b123:0c12:87aa:bbcc:98dc:ab54"]; // 1/+ 0 deb byte
-$ipv6_f = ["abcd:1234:b123:dc12:8700:b0cc:98dc:ab54"]; // cas général
-$ipv6_g = ["0000:0000:0023:0000:8745:0000:0000:"]; // mélange du tout
 
-
-final class TrueTest extends TestCase
+final class ipTest extends TestCase
 {
     public function testSimplifyIPv6()
     {
-        $this->assertTrue(false);
+        //test réaliser selon partition d'équivalence
+        $this->assertEquals("0:abcd:ef45:98a3:1234:bc97:ae51:bd5d",simplifyV2("0000:abcd:ef45:98a3:1234:bc97:ae51:bd5d")); //A2.7A3
+        $this->assertEquals("::ef45:98a3:1234:bc97:ae51:bd5d",simplifyV2("0000:0000:ef45:98a3:1234:bc97:ae51:bd5d")); //2A2.6A3
+        $this->assertEquals("::1234:bc97:ae51:bd5d",simplifyV2("0000:0000:0000:0000:1234:bc97:ae51:bd5d")); //nA2.8-nA3
+        $this->assertEquals("abcd:ef45:98a3:1234:bc97:ae51:bd5d:0",simplifyV2("abcd:ef45:98a3:1234:bc97:ae51:bd5d:0000")); //7A3.A2
+        $this->assertEquals("abcd:ef45:98a3:1234:bc97:ae51::",simplifyV2("abcd:ef45:98a3:1234:bc97:ae51:0000:0000")); //6A3.2A2
+        $this->assertEquals("abcd:ef45:98a3:1234::",simplifyV2("abcd:ef45:98a3:1234:0000:0000:0000:0000")); //8-nA3.nA2
+        $this->assertEquals("1:2:3:4:5:6:7:8",simplifyV2("0001:0002:0003:0004:0005:0006:0007:0008")); //8A1
+        $this->assertEquals("::ef45:98a3:0:0:ae51:bd5d",simplifyV2("0000:0000:ef45:98a3:0000:0000:ae51:bd5d"));
+        $this->assertEquals("0:ef45:98a3:1234:ae51:ae51:bd5d:0",simplifyV2("0000:ef45:98a3:ac91:1234:ae51:bd5d:0000"));
+        $this->assertEquals("::1234:ae52:ae51:ac91:bd5d:0",simplifyV2("0000:0000:12345:ae52:ae51:ac91:bd5d:0000"));
     }
 }
