@@ -1,4 +1,5 @@
-### Aperçu Général
+### Documentation du Module IPv6
+
 Notre module ping est une interface web permettant aux utilisateurs de pinguer une adresse IP ou un nom de domaine. Le résultat du ping est affiché sur la page web. Le module est composé de trois parties principales : une interface utilisateur (front-end), un script JavaScript pour la gestion des requêtes, et un script PHP pour exécuter la commande ping et traiter les résultats.
 
 ### Interface Utilisateur (HTML/CSS)
