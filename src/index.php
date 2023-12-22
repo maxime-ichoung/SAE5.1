@@ -6,7 +6,7 @@
     <link href="styles/bootstrap.css" rel="stylesheet">
     <link href="styles/styles.css" rel="stylesheet">
     <link href="styles/index.css" rel="stylesheet">
-    <link rel="icon" href="../assets/logo/logo.png">
+    <link rel="icon" href="assets/logo/logo.png">
     <title>Accueil</title>
 
 </head>
@@ -21,7 +21,7 @@
             <div class="col-auto">
                 <a href="Module_ping.php">
                     <figure>
-                        <img src="../assets/images/Ping.jpg" alt="Module Ping">
+                        <img src="assets/images/Ping.jpg" alt="Module Ping">
                         <figcaption>Module Ping</figcaption>
                     </figure>
                 </a>
@@ -29,7 +29,7 @@
             <div class="col-auto">
                 <a href="Module_IPV4.php">
                     <figure>
-                        <img src="../assets/images/IPV4.jpg" alt="Module IPV4">
+                        <img src="assets/images/IPV4.jpg" alt="Module IPV4">
                         <figcaption>Module IPV4</figcaption>
                     </figure>
                 </a>
@@ -37,7 +37,7 @@
             <div class="col-auto">
                 <a href="Module_IPV6.php">
                     <figure>
-                        <img src="../assets/images/IPV6.jpg" alt="Module IPV6">
+                        <img src="assets/images/IPV6.jpg" alt="Module IPV6">
                         <figcaption>Module IPV6</figcaption>
                     </figure>
                 </a>
