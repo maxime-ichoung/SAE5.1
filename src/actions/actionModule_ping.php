@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Validation si non valider on exit
-    if (!filter_var($ip, FILTER_VALIDATE_IP) && !validateNomDomaine($address)) {
+    if (!filter_var($address, FILTER_VALIDATE_IP) && !validateNomDomaine($address)) {
         echo "IP ou adresse invalide. Veuillez saisir une IP ou adresse valide !";
     } else {
         // Ping

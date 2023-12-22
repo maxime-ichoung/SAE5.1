@@ -61,4 +61,4 @@ Une fois l'exécution terminée, vous pouvez lancer la dernière commande, toujo
 sudo docker run -p 8080:80 sae5
 ```
 
-Il vous suffit de vous connecter au serveur Web via un navigateur avec l'adresse : `localhost:8080`.
+Il vous suffit de vous connecter au serveur Web via un navigateur avec l'adresse : `localhost:8080/Home.php`.
