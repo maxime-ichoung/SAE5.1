@@ -64,7 +64,7 @@
             <div class="col-auto">
                 <a href="Module_ping.php">
                     <figure>
-                        <img src="../assets/images/Ping.jpg" width="300px" alt="Mountains">
+                        <img src="../assets/images/Ping.jpg" alt="Module Ping">
                         <figcaption>Module Ping</figcaption>
                     </figure>
                 </a>
@@ -72,7 +72,7 @@
             <div class="col-auto">
                 <a href="Module_IPV4.php">
                     <figure>
-                        <img src="../assets/images/IPV4.jpg" width="300px" alt="Mountains">
+                        <img src="../assets/images/IPV4.jpg" alt="Module IPV4">
                         <figcaption>Module IPV4</figcaption>
                     </figure>
                 </a>
@@ -80,7 +80,7 @@
             <div class="col-auto">
                 <a href="Module_IPV6.php">
                     <figure>
-                        <img src="../assets/images/IPV6.jpg" width="300px" alt="Mountains">
+                        <img src="../assets/images/IPV6.jpg" alt="Module IPV6">
                         <figcaption>Module IPV6</figcaption>
                     </figure>
                 </a>

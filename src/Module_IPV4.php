@@ -48,7 +48,7 @@
             <div class="col-md-8">
                 <div class="input-group">
                     <input type="text" class="form-control" id="addr" name="addr" required pattern="^((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])$" value="<?php echo $addr_aff ?>">
-                    <span class="input-group-text">/</span>
+                    <span class="input-group-text"><label for="mask">/</label></span>
                     <input type="number" class="form-control" id="mask" name="mask" min="1" max="32" value="<?php echo $mask_aff ?>" required>
                 </div>
             </div>
@@ -66,8 +66,8 @@
                     while($res < $nb_res+1){
                         $taille_res = 'taille_res_'.$res;
                         echo "<tr>";
-                        echo "<th scope='row'>$res</th>";
-                        echo "<td><input type='number' name=$taille_res class='form-control' min='1' required> </td>";
+                        echo "<th scope='row'><label for='$taille_res'>$res</label></th>";
+                        echo "<td><input type='number' id='$taille_res' name=$taille_res class='form-control' min='1' required> </td>";
                         echo "</tr>";
                         $res++;
                     }
