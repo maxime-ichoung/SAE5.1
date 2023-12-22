@@ -1,6 +1,6 @@
 <?php
 require '../actions/actionModule_ping.php';
-use "PHPUnit/Framework/TestCase";
+use PHPUnit\Framework\TestCase;
 
 
 class NomDomaineValidatorTest extends TestCase {
