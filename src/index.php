@@ -5,7 +5,7 @@
     <link href="styles/bootstrap.css" rel="stylesheet">
     <link href="styles/styles.css" rel="stylesheet">
     <link href="styles/index.css" rel="stylesheet">
-    <link rel="icon" href="../assets/logo/logo.svg">
+    <link rel="icon" href="../assets/logo/logo.png">
     <title>Accueil</title>
 
 </head>
