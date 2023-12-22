@@ -36,6 +36,7 @@
             $tamp = taille_mask_sous_res($taille_actuel);
             ${'taille_alloue_' . $i} = $tamp[0];
             ${'mask_' . $i} = $tamp[1];
+            $taille_alloue_totale += $tamp[0];
         }
 
         # Mécanisme de filtration des demandes de divisions trop grandes par rappport au réseau fournis

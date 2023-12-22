@@ -4,7 +4,8 @@ function taille_mask_sous_res($taille_sous_res){
     /**
      * Fonction qui calcule la taille et le masque alloué d'un sous réseaux en fonction de la taille souhaitée. La taille allouée
      * correspond à (puissance de 2) - 2 > à taille souhaitée. Le masque est calculé comme suit : mask = n, avec
-     * n correspondant à  (2**(32-n)) - 2 = taille allouée, n compris entre 8 et 30.
+     * n correspondant à  (2**(32-n)) - 2 = taille allouée, n compris entre 8 et 30. Si la taille souhaite est supérieur à (2**24)-2,
+     * masque = 0 et taille alloue = 2**25 (pour permettre au méchanisme de filtration de repérer
      *
      * Exemple : pour une taille souhaitée de 7, la taille allouée sera 14 car 14 = 16 - 2 = (2**4) - 2, (2**3) ne
      * conviendrai pas car (2**3) - 2 = 8 - 2 = 6 or 6 < 7. Le masque sera 28, car 32 - 28 = 4, or taille allouée est égale
@@ -14,6 +15,7 @@ function taille_mask_sous_res($taille_sous_res){
      *
      * Sortie : un tableau de taille 2, contenant la taille allouée en indice 0 et le masque en indice 1.
      */
+    $mask_sous_res = 0;
     for ($j = 30; $j > 8; $j--) {
         $taille_alloue = (2 ** (32 - $j)) - 2;
         if ($taille_sous_res <= $taille_alloue) {
@@ -21,7 +23,13 @@ function taille_mask_sous_res($taille_sous_res){
             break;
         }
     }
-    return [$taille_alloue,$mask_sous_res];
+    if($mask_sous_res != 0){
+        return [$taille_alloue,$mask_sous_res];
+    }
+    else{
+        $taille_alloue = 2**25;
+        return [$taille_alloue,$mask_sous_res];
+    }
 }
 
 
@@ -36,6 +44,9 @@ function mask_cdri_vers_dec($mask_actuel){
      *
      * Sortie : une chaîne de caractères, le masque au format IP.
      */
+    if($mask_actuel  <= 0 || $mask_actuel > 32){
+        return "-1";
+    }
     $mask_dec = '';
     $packet_bits = 1;
     while ($mask_actuel >= 8) {
