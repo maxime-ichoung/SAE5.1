@@ -34,10 +34,19 @@ Le but est de partitionner l'entrée des tests pour minimiser les tests à réal
 <tr> <td colspan="4"> 
 Description du test : Test de la fonction de simplification de l'IPv6 dans l'ensemble des 8*16o en hexadecimal de l'ip par la méthode de partition d'équivalence.
 Soit A l'ensemble des notations de 8*16o en hexadecimal. Soit A1 l'ensemble des notations hexadecimal de 2o qui commence par n 0, 1 <= n <4. Soit A2 les notations hexadecimal de 2o de valeur 0. Soit A3 l'ensemble des notation hexadecimal de 2o restant. <br>
-Soit B1 l'ensemble des notations simplifier d'un A2. Soit B2 la notation simplifier d'une suite de A2. 
+Soit B1 l'ensemble des notations simplifier d'un A2. Soit B2 la notation simplifier d'une suite de A2. Soit B3 la notation simplifier d'un A3 sans les n 0
 </td>
 </tr>
 <tr> <td colspan="4"> Responsable : Pereira de Miranda Romain</td> </tr>
 <tr> <td> Classe </td> <td> Acteur 1 (a) </td>  <td> Acteur 2 </td> <td> Résultat attendu (c) </td></tr>
-<tr> <td> P1 </td> <td> a∈A1 </td> <td> b∈7A3 </td> <td> a &cup; b = c∈B1 &cup; 7A3 </td></tr>
+<tr> <td> P1 </td> <td> a∈A2 </td> <td> b∈7A3 </td> <td> a &cup; b = c ∈ B1 &cup; 7A3 </td></tr>
+<tr> <td> P2 </td> <td> a∈2A2 </td> <td> b∈6A3</td> <td> a &cup; b = c ∈ B2 &cup; 6A3 </td></tr>
+<tr> <td> P3 </td> <td> a∈nA2 </td> <td> b∈8-nA3 </td> <td> a &cup; b = c ∈ B2 &cup; 8-nA3</td></tr>
+<tr> <td> P4 </td> <td> a∈7A3 </td> <td> b∈A2 </td> <td> a &cup; b = c ∈ 7A3 &cup; B1</td></tr>
+<tr> <td> P5 </td> <td> a∈6A3 </td> <td> b∈2A2 </td> <td> a &cup; b = c ∈ 6A3 &cup; B2</td></tr>
+<tr> <td> P6 </td> <td> a∈8-nA3</td> <td> b∈nA2 </td> <td> a &cup; b = c ∈ 8-nA3 &cup ; B2</td></tr>
+<tr> <td> P7 </td> <td colspan = 2 align="center"> a∈8A1 </td> <td> a = c ∈ 8B3 </td></tr>
+<tr> <td> P8 </td> <td> a∈2A2</td> <td> b∈2A3</td> <td> a &cup; b &cup; a &cup; b = c ∈ B2 &cup; 2A3 &cup; 2B1 &cup; 2A3</td></tr>
+<tr> <td> P9 </td> <td> a∈A1 </td> <td> b∈6A3</td> <td> a &cup; b &cup; a = c ∈ B1 &cup; 6A3 &cup; B1 </td></tr>
+<tr> <td> P10 </td> <td> a∈A2 </td> <td> b∈5A3 </td> <td> 2a &cup; b &cup; a = c ∈ B2 &cup; 5A3 &cup; B1 </td> </tr>
 </table>
