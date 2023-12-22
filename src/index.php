@@ -4,55 +4,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="styles/bootstrap.css" rel="stylesheet">
     <link href="styles/styles.css" rel="stylesheet">
+    <link href="styles/index.css" rel="stylesheet">
     <link rel="icon" href="../assets/logo/logo.svg">
     <title>Accueil</title>
-    <style>
-        a {
-            text-decoration: none;
-        }
-        figure {
-            display: grid;
-            border-radius: 1rem;
-            overflow: hidden;
-            cursor: pointer;
-        }
-        figure > * {
-            grid-area: 1/1;
-            transition: .4s;
-        }
-        figure figcaption {
-            display: grid;
-            align-items: end;
-            font-family: sans-serif;
-            font-size: 2.3rem;
-            font-weight: bold;
-            color: #0000;
-            padding: .75rem;
-            background: var(--c,#0009);
-            clip-path: inset(0 var(--_i,100%) 0 0);
-            -webkit-mask:
-                    linear-gradient(#000 0 0),
-                    linear-gradient(#000 0 0);
-            -webkit-mask-composite: xor;
-            -webkit-mask-clip: text, padding-box;
-            margin: -1px;
-        }
-        figure:hover figcaption{
-            --_i: 0%;
-        }
-        figure:hover img {
-            transform: scale(1.2);
-        }
-        @supports not (-webkit-mask-clip: text) {
-            figure figcaption {
-                -webkit-mask: none;
-                color: #fff;
-            }
-        }
-        body {
-            place-content: center;
-        }
-    </style>
+
 </head>
 <body>
     <?php include("Header.html") ?>
