@@ -3,10 +3,6 @@ function validateNomDomaine($nom_de_domaine) {
     return preg_match("/^((?!-)[A-Za-z0-9-]{1,63}(?<!-)\.)+[A-Za-z]{2,6}$/", $nom_de_domaine);
 }
 
-function validationIP($ip) {
-    return filter_var($ip, FILTER_VALIDATE_IP);
-}
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $address = $_POST['address'];
     $count = intval($_POST['count']);
@@ -18,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Validation si non valider on exit
-    if (!validationIP($address) && !validateNomDomaine($address)) {
+    if (!filter_var($ip, FILTER_VALIDATE_IP) && !validateNomDomaine($address)) {
         echo "IP ou adresse invalide. Veuillez saisir une IP ou adresse valide !";
     } else {
         // Ping
